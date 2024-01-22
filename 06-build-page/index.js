@@ -26,12 +26,17 @@ function createHlmlFile() {
                     if (components.size === files.length) {
                         let tmp = [];
                         result.split("\r\n").forEach(line => {
-                            let x = line.indexOf("{{");
-                            let y = line.indexOf("}}");
-                            if (x !== -1 && y !== -1) {
-                                tmp.push(line.substring(0, x - 1) + components.get(line.substring(x, y + 2)) + line.substring(y + 3));
+                            let tempLine = line;
+                            if (tempLine.includes("{{")) {
+                                while (tempLine !== '') {
+                                    let x = tempLine.indexOf("{{");
+                                    let y = tempLine.indexOf("}}");
+                                    let tagData = components.get(tempLine.substring(x, y + 2));
+                                    tmp.push(tempLine.substring(0, x - 1) + tagData);
+                                    tempLine = tempLine.substring(y + 2);                                      
+                                }                                
                             } else {
-                                tmp.push(line);
+                                tmp.push(tempLine);
                             }
                         });
                         writer.write(tmp.join("\r\n"));
@@ -66,7 +71,6 @@ function createCssFile() {
 
 function copyFilesFromDirectory(oldPath, newPath) {
     const dirr = fs.readdir(oldPath, (err, files) => {
-        console.log(oldPath, files);
         files?.forEach(file => {
             fs.copyFile(
                 path.join(oldPath, file),
