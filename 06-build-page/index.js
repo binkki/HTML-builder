@@ -82,10 +82,10 @@ function copyFilesFromDirectory(oldPath, newPath) {
 }
 
 
-async function coppyAssets(fileName) {
+function coppyAssets(fileName) {
     let oldFolderName = path.join(__dirname, fileName);
     let newFolderName = path.join(resultPath, fileName);    
-    await fs.mkdir(newFolderName, { recursive: true }, (err) => {
+    fs.mkdir(newFolderName, { recursive: true }, (err) => {
         const dirr = fs.readdir(oldFolderName, (err, files) => {
             files?.forEach(file => {
                 fs.stat(path.join(oldFolderName, file), (err, stats) => {
