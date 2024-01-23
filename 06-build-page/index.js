@@ -31,9 +31,14 @@ function createHlmlFile() {
                                 while (tempLine !== '') {
                                     let x = tempLine.indexOf("{{");
                                     let y = tempLine.indexOf("}}");
-                                    let tagData = components.get(tempLine.substring(x, y + 2));
-                                    tmp.push(tempLine.substring(0, x - 1) + tagData);
-                                    tempLine = tempLine.substring(y + 2);                                      
+                                    if (x !== -1 && y !== -1) {
+                                        let tagData = components.get(tempLine.substring(x, y + 2));
+                                        tmp.push(tempLine.substring(0, x - 1) + tagData);
+                                        tempLine = tempLine.substring(y + 2);
+                                    } else {
+                                        tmp.push(tempLine);
+                                        tempLine = '';
+                                    }                                                                          
                                 }                                
                             } else {
                                 tmp.push(tempLine);
